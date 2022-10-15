@@ -31,4 +31,21 @@ public class CardDeliveryTest {
         $("[data-test-id=notification]").shouldHave(exactText("Успешно! " + "Встреча успешно забронирована на "
         + date), Duration.ofSeconds(15)).shouldBe(visible);
     }
+
+    @Test
+    void shouldFillFormUsingHelpButtons() throws InterruptedException {
+        String date = generateDate(3);
+        open("http://localhost:9999/");
+        $("[data-test-id='city'] input").setValue("Са");
+        $$(".menu-item__control").find(exactText("Санкт-Петербург")).click();
+        $("[data-test-id=date] input").sendKeys(Keys.chord(Keys.SHIFT,Keys.HOME),Keys.BACK_SPACE);
+        $("[data-test-id=date] input").setValue(date);
+        $("[data-test-id=name] input").setValue("Петр Василий");
+        $("[data-test-id=phone] input").setValue("+78883331313");
+        $("[data-test-id=agreement]").click();
+        $(".button__text").click();
+        $("[data-test-id=notification]").shouldHave(exactText("Успешно! " + "Встреча успешно забронирована на "
+                + date), Duration.ofSeconds(15)).shouldBe(visible);
+        Thread.sleep(8000);
+    }
 }
